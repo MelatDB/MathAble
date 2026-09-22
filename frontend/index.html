@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="MathAble — accessible mathematics practice with step-by-step solutions, spoken maths, keyboard and screen-reader support."
+    />
+    <title>MathAble — Accessible Mathematics Practice</title>
+    <!--
+      MathJax 3 — renders MathML (produced by the backend) in browsers that
+      don't support it natively (Chrome, Edge).  Configuration is minimal:
+      we only need the MathML input + CHTML output.  The `startup` section
+      tells MathJax not to auto-typeset on load; our MathDisplay component
+      calls MathJax.typesetPromise() after injecting content so it only
+      processes new math nodes, not the whole page each time.
+      Screen readers still read the accessible MathML tree that MathJax
+      preserves alongside the rendered output.
+    -->
+    <script>
+      window.MathJax = {
+        options: { skipHtmlTags: ["script","noscript","style","textarea","pre"] },
+        startup: { typeset: false }
+      };
+    </script>
+    <script
+      id="MathJax-script"
+      async
+      src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/mml-chtml.js"
+    ></script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

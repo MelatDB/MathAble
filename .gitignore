@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+.pytest_cache/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+*.db
+backend/mathable.db
+backend/mathable_smoke.db
+.env
+backend/.env
+
+# Test output logs
+pytest2.txt
+pytest_out.txt
+tests/smoke_out.txt
+
+# Node
+node_modules/
+frontend/node_modules/
+frontend/dist/
+npm-debug.log*
+
+# Editors / OS
+.vscode/
+.idea/
+*.swp
+.DS_Store
+Thumbs.db
