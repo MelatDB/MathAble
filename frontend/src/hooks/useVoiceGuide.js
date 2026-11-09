@@ -1,18 +1,15 @@
 /**
  * useVoiceGuide — speaks a page introduction when voice navigation is active.
  *
- * Called once on page mount with:
- *   intro   — what this page is
- *   actions — what the user can do here (voice commands + key actions)
+ * ONLY speaks automatically when:
+ *   - Navigation mode is "voice" or "combined" (voiceActive = true)
  *
- * Speaks when EITHER:
- *   - voice navigation mode is active (voice or combined), OR
- *   - tts_enabled is true in accessibility settings
+ * In keyboard-only mode this hook does nothing — the page guide is silent.
+ * TTS buttons on individual pages still work manually regardless of this hook.
  *
- * A blind user using voice navigation needs this read aloud regardless of
- * whether they explicitly enabled TTS in settings.
- *
- * Previous speech is cancelled so the new page description is heard immediately.
+ * This separation is intentional: a keyboard user who has TTS enabled should
+ * be able to press a button to hear content, but should NOT have every page
+ * automatically read aloud when they navigate.
  */
 import { useEffect } from "react";
 import { useNavigation } from "../navigation/NavigationContext";
@@ -23,16 +20,13 @@ export function useVoiceGuide({ intro, actions }) {
   const { settings }    = useAccessibility();
 
   useEffect(() => {
-    // Speak if voice nav is active OR if TTS is explicitly enabled
-    const shouldSpeak = voiceActive || settings.tts_enabled;
-    if (!shouldSpeak) return;
+    // Only auto-speak in voice navigation mode
+    if (!voiceActive) return;
     if (!("speechSynthesis" in window)) return;
 
     const fullScript = [intro, actions].filter(Boolean).join("  ");
     if (!fullScript.trim()) return;
 
-    // Small delay to let the page render and previous page's speech end,
-    // then cancel any leftover speech and start the new page intro.
     const t = setTimeout(() => {
       window.speechSynthesis.cancel();
 
@@ -53,7 +47,6 @@ export function useVoiceGuide({ intro, actions }) {
       clearTimeout(t);
       window.speechSynthesis.cancel();
     };
-  // Only run on mount — page context doesn't change mid-page
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 }

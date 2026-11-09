@@ -1079,8 +1079,297 @@ select {
 }
 
 /* --------------------------------------------------------------------------
-   22. Utility classes
+   23. Lovable-inspired refinements
+   — Cleaner cards, better stat cards, icon containers, hero styling
    -------------------------------------------------------------------------- */
+
+/* Hero section background-image style card */
+.hero-card {
+  background: linear-gradient(135deg, #1a2235 0%, #0d1117 100%);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Stat card with icon header (Lovable style) */
+.stat-card-lg {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+.stat-card-lg .stat-icon {
+  width: 36px; height: 36px;
+  background: rgba(245,158,11,0.12);
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1rem;
+  color: var(--color-primary);
+  font-size: 1rem;
+}
+.stat-card-lg .stat-number {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--color-text);
+  line-height: 1;
+  margin-bottom: 0.2rem;
+}
+.stat-card-lg .stat-sublabel {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+/* Action card (dashboard "Choose your next step") */
+.action-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  transition: border-color 0.2s;
+  text-decoration: none;
+}
+.action-card:hover { border-color: var(--color-primary); }
+.action-card .action-icon {
+  width: 36px; height: 36px;
+  background: rgba(245,158,11,0.12);
+  border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1rem;
+  color: var(--color-primary);
+}
+.action-card h3 { margin: 0; color: var(--color-text); font-size: 1.05rem; }
+.action-card p { margin: 0; font-size: 0.85rem; color: var(--color-text-muted); }
+.action-card .action-link {
+  font-size: 0.85rem;
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+  margin-top: auto;
+}
+.action-card .action-link:hover { text-decoration: underline; }
+
+/* Practice snapshot card (dashboard accuracy widget) */
+.snapshot-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.snapshot-card .snapshot-text p { margin: 0; }
+.snapshot-card .snapshot-text .snapshot-title {
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 0.3rem;
+}
+.snapshot-card .snapshot-text .snapshot-message {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+.snapshot-accuracy {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+.snapshot-accuracy .accuracy-ring {
+  width: 56px; height: 56px;
+  border-radius: 50%;
+  border: 3px solid var(--color-success);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.9rem;
+  font-weight: 800;
+  color: var(--color-success-text);
+  margin-bottom: 0.25rem;
+}
+.snapshot-accuracy .accuracy-label {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* Topic progress bar (Lovable style with strong/developing/getting started labels) */
+.topic-progress-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 1.1rem;
+}
+.topic-progress-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.topic-progress-name {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+.topic-progress-name span {
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--color-text-muted);
+  margin-left: 0.35rem;
+}
+.topic-progress-pct {
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.topic-progress-pct.strong { color: var(--color-success-text); }
+.topic-progress-pct.developing { color: var(--color-warning-text); }
+.topic-progress-pct.getting-started { color: var(--color-error-text); }
+
+.progress-track {
+  background: var(--color-surface-2);
+  border-radius: 100px;
+  height: 6px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  border-radius: 100px;
+  transition: width 0.5s ease;
+}
+.progress-fill.strong { background: var(--color-success); }
+.progress-fill.developing { background: var(--color-warning); }
+.progress-fill.getting-started { background: var(--color-error); }
+
+/* Legend row */
+.progress-legend {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-top: 0.75rem;
+  flex-wrap: wrap;
+}
+.progress-legend span { display: flex; align-items: center; gap: 0.3rem; }
+.legend-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Nav active tab — Lovable uses bottom border style */
+.nav-link-active,
+.nav-link[aria-current="page"] {
+  color: var(--color-text) !important;
+  background: transparent !important;
+  border-color: transparent !important;
+  border-bottom: 2px solid var(--color-primary) !important;
+  border-radius: 0 !important;
+  font-weight: 600;
+}
+
+/* Voice navigation active badge */
+.voice-nav-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  background: rgba(16,185,129,0.1);
+  border: 1px solid var(--color-success);
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-success-text);
+}
+.voice-nav-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--color-success);
+  animation: pulse-border 1.5s infinite;
+  flex-shrink: 0;
+}
+
+/* Section heading with side link (e.g. "Explore mathematics" + "Explore practice →") */
+.section-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 1rem;
+}
+.section-header-link {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+}
+.section-header-link:hover { text-decoration: underline; }
+
+/* Input with icon (voice input button inside) */
+.input-with-icon {
+  position: relative;
+}
+.input-with-icon input,
+.input-with-icon textarea {
+  padding-right: 8rem;
+}
+.input-icon-btn {
+  position: absolute;
+  right: 0.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  background: var(--color-surface-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-family: inherit;
+}
+.input-icon-btn:hover { color: var(--color-primary); border-color: var(--color-primary); }
+
+/* Accessibility footer note */
+.a11y-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+}
+
+/* Hero section with background image overlay */
+.hero-section {
+  position: relative;
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: linear-gradient(to right, var(--color-bg-elevated) 50%, transparent 100%);
+  margin-bottom: 2.5rem;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+}
+.hero-content {
+  position: relative;
+  z-index: 2;
+  padding: 3rem 2rem;
+  max-width: 560px;
+}
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background: url('/hero-bg.jpg') center/cover no-repeat;
+  opacity: 0.18;
+  z-index: 1;
+}
+
 .mt-1 { margin-top: 0.5rem; }
 .mt-2 { margin-top: 1rem; }
 .mt-3 { margin-top: 1.5rem; }

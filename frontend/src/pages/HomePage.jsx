@@ -5,10 +5,10 @@ import { usePageAnnouncement } from "../hooks/usePageAnnouncement";
 import { useVoiceGuide } from "../hooks/useVoiceGuide";
 
 const TOPICS = [
-  { icon: "∑", label: "Algebra & Matrices",     desc: "Linear equations, operations, eigenvalues." },
-  { icon: "㏒", label: "Roots & Logarithms",     desc: "Exponents, base powers, natural logs." },
-  { icon: "∫", label: "Calculus & Integration",  desc: "Limits, derivatives, definite integrals." },
-  { icon: "△", label: "Trigonometry",            desc: "Identities, sine/cosine, geometry." },
+  { icon: "∑", label: "Algebra",      desc: "Equations, expressions, graphs.", sub: "Equations · Expressions · Graphs" },
+  { icon: "∫", label: "Calculus",     desc: "Change, rates, accumulation.",    sub: "Limits · Derivatives · Integrals" },
+  { icon: "√", label: "Roots",        desc: "Square roots, radicals, powers.", sub: "Square roots · Radicals · Powers" },
+  { icon: "△", label: "Trigonometry", desc: "Triangles, angles, identities.",  sub: "Sine · Cosine · Identities" },
 ];
 
 export default function HomePage() {
@@ -18,193 +18,123 @@ export default function HomePage() {
   usePageAnnouncement(
     user
       ? "Dashboard. Use the navigation to Solve Math, Practice, view Progress, or adjust Settings."
-      : "Welcome to MathAble. Accessible mathematics for everyone. Create a free account or log in to get started."
+      : "Welcome to MathAble. Accessible mathematics for everyone."
   );
-
   useVoiceGuide({
     intro: user
       ? `Welcome back, ${user.name}. You are on the MathAble Dashboard.`
       : "Welcome to MathAble. Accessible mathematics for everyone.",
     actions: user
-      ? "You can say: Solver, to go to the Math Solver. " +
-        "Practice, to start a practice session. " +
-        "Progress, to see your learning progress. " +
-        "Settings, to change accessibility options. " +
-        "Help, to hear how to use MathAble. " +
-        "Solutions, to see your recent solved problems."
-      : "To get started, say: Log In, or Get Started to create a new account. " +
-        "Say Help to learn more about MathAble.",
+      ? "Say: Solver, Practice, Progress, Settings, Help, or Solutions."
+      : "Say: Log In, or Get Started to create a new account.",
   });
 
   if (user?.role === "teacher") return <Navigate to="/teacher" replace />;
 
-  return (
-    <div>
-      {/* Context banner */}
-      <div className="context-banner" role="note" aria-label="Keyboard shortcut tip">
-        Press Tab/Shift-Tab to navigate to main page controls or login
-      </div>
-
-      {/* Hero section */}
-      <section
-        aria-labelledby="hero-heading"
-        style={{ padding: "3rem 0 2.5rem", display: "grid", gap: "2rem" }}
-        className="page-grid page-grid-sidebar"
-      >
-        {/* Left: copy */}
-        <div>
-          <span className="section-label">University-accessible STEM platform</span>
-          <h1 id="hero-heading" style={{ fontSize: "clamp(2rem,5vw,3rem)", marginBottom: "1rem" }}>
-            Making Mathematics<br />More Accessible
+  /* ── Logged-in dashboard ── */
+  if (user) {
+    return (
+      <div>
+        <section aria-labelledby="dash-heading" style={{ marginBottom: "2rem" }}>
+          <span className="section-label">Your Learning Space</span>
+          <h1 id="dash-heading" style={{ marginBottom: "0.25rem" }}>
+            Welcome back, {user.name}
           </h1>
-          <p style={{ fontSize: "1rem", maxWidth: "44ch", marginBottom: "1.5rem" }}>
-            Empowering blind and visually impaired university students to independently write,
-            calculate, and study complex higher-level equations with tactile, verbal, and
-            screen-reader optimisations.
-          </p>
+          <p style={{ marginBottom: "1.5rem" }}>A calm place to work through the next problem at your own pace.</p>
 
-          <div className="flex flex-wrap gap-2">
-            {user ? (
-              <Link
-                to="/solve"
-                className="btn btn-primary btn-lg"
-                onClick={() => announce("Opening the math solver.")}
-              >
-                Go to Solver
-                <span className="sr-only">(keyboard shortcut Alt+S)</span>
-              </Link>
-            ) : (
-              <>
-                <Link to="/register" className="btn btn-primary btn-lg">
-                  Get Started For Free
-                  <kbd style={{ fontSize: "0.7rem", background: "rgba(0,0,0,0.2)", border: "none", color: "inherit", padding: "0.1em 0.35em", borderRadius: "3px" }}>Enter</kbd>
-                </Link>
-                <Link to="/help" className="btn btn-secondary btn-lg">
-                  Listen Overview Video
-                  <kbd style={{ fontSize: "0.7rem" }}>Alt</kbd>
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-
-        {/* Right: preview card */}
-        <div
-          className="card"
-          aria-label="Tactile and audio search preview"
-          style={{ background: "var(--color-surface)", padding: "1.5rem" }}
-        >
-          <span className="section-label">Tactile &amp; Audio Search Preview</span>
-
-          {/* Braille dots decoration */}
-          <div aria-hidden="true" style={{ display: "flex", gap: "0.35rem", margin: "0.75rem 0" }}>
-            {Array.from({ length: 14 }).map((_, i) => (
-              <span
-                key={i}
-                style={{
-                  width: 10, height: 10, borderRadius: "50%",
-                  background: i < 9 ? "var(--color-primary)" : "var(--color-info)",
-                  display: "inline-block",
-                }}
-              />
-            ))}
-          </div>
-
-          <div
-            className="math-container"
-            style={{ marginBottom: "0.75rem", fontSize: "1.1rem" }}
-            aria-label="Example expression: f of x equals sine of x"
-          >
-            <code className="font-mono" style={{ background: "none", border: "none", color: "var(--color-text)", fontSize: "1.1rem", padding: 0 }}>
-              f(x) = \sin(x)
-            </code>
-            <div style={{ position: "absolute", right: "0.75rem", top: "50%", transform: "translateY(-50%)" }}>
-              <button className="audio-btn btn-sm" type="button" aria-label="Read aloud">
-                🔊 Read Aloud
-              </button>
+          {/* Practice snapshot */}
+          <div className="snapshot-card">
+            <div className="snapshot-text">
+              <p className="snapshot-title">Your practice snapshot</p>
+              <p className="snapshot-message">Small steps add up. Choose a topic and keep going.</p>
+            </div>
+            <div className="snapshot-accuracy">
+              <div className="accuracy-ring" aria-label="Accuracy">—</div>
+              <span className="accuracy-label">Accuracy<br />across practice</span>
             </div>
           </div>
 
-          <div
-            className="step-audio-row"
-            aria-live="polite"
-            aria-label="Audio narration preview"
-          >
-            <span className="step-audio-icon" aria-hidden="true">🔊</span>
-            <span style={{ fontStyle: "italic", fontSize: "0.85rem" }}>
-              Audio Narration: "This function is a sine of x"
-            </span>
+          {/* Action cards */}
+          <div style={{ marginBottom: "0.5rem" }}>
+            <div className="section-header-row">
+              <h2 style={{ margin: 0, fontSize: "1rem" }}>Choose your next step</h2>
+            </div>
+            <div className="page-grid page-grid-2" style={{ maxWidth: "720px" }}>
+              <Link to="/solve" className="action-card" aria-describedby="solve-desc">
+                <span className="action-icon" aria-hidden="true">∑</span>
+                <h3>Solve Math</h3>
+                <p id="solve-desc">Work through a problem step by step with accessible, read-aloud explanations.</p>
+                <span className="action-link">Open solver →</span>
+              </Link>
+              <Link to="/practice" className="action-card" aria-describedby="practice-desc"
+                onClick={() => announce("Opening Practice.")}>
+                <span className="action-icon" aria-hidden="true">📖</span>
+                <h3>Practice</h3>
+                <p id="practice-desc">Select a topic, choose your pace, and get helpful feedback along the way.</p>
+                <span className="action-link">Choose a practice question →</span>
+              </Link>
+            </div>
           </div>
+        </section>
+      </div>
+    );
+  }
+
+  /* ── Guest landing page ── */
+  return (
+    <div>
+      {/* Hero */}
+      <div className="hero-section" aria-labelledby="hero-heading">
+        <div className="hero-bg" aria-hidden="true" />
+        <div className="hero-content">
+          <span className="section-label">MathAble · Inclusive Mathematics</span>
+          <h1 id="hero-heading" style={{ fontSize: "clamp(2rem, 5vw, 2.75rem)", marginBottom: "1rem" }}>
+            Making Mathematics<br />More Accessible
+          </h1>
+          <p style={{ fontSize: "1rem", maxWidth: "44ch", marginBottom: "1.75rem" }}>
+            A clearer way to work through mathematics, one thoughtfully explained step at a time.
+          </p>
+          <div className="flex flex-wrap gap-2" style={{ marginBottom: "1rem" }}>
+            <Link to="/register" className="btn btn-primary btn-lg">
+              Get Started →
+            </Link>
+            <Link to="/help" className="btn btn-secondary btn-lg">
+              Explore dashboard
+            </Link>
+          </div>
+          <p className="a11y-note">
+            <span aria-hidden="true">🔊</span>
+            Compatible with screen readers and keyboard navigation
+          </p>
         </div>
-      </section>
+      </div>
 
-      {/* Curriculum section */}
-      <section aria-labelledby="curriculum-heading" style={{ paddingTop: "2rem" }}>
-        <span className="section-label">Supported Curriculum</span>
-        <h2 id="curriculum-heading" style={{ fontSize: "clamp(1.4rem, 3vw, 1.85rem)", marginTop: 0, marginBottom: "0.5rem" }}>
-          Fully compatible with university-level mathematics
-        </h2>
-        <p style={{ marginBottom: "1.5rem" }}>
-          Every topic includes fully validated teach-out paths, clear narration paths, and
-          interactive step solving.
-        </p>
-
+      {/* Topic cards */}
+      <section aria-labelledby="topics-heading" style={{ marginTop: "2.5rem" }}>
+        <div className="section-header-row">
+          <h2 id="topics-heading" style={{ margin: 0, fontSize: "1.1rem" }}>Explore mathematics</h2>
+          <Link to="/practice" className="section-header-link">Explore practice →</Link>
+        </div>
         <ul
-          className="card-list page-grid-4"
-          style={{ gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))" }}
+          style={{ listStyle: "none", padding: 0, margin: 0,
+                   display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}
           aria-label="Supported mathematics topics"
         >
           {TOPICS.map((t) => (
             <li key={t.label} className="feature-card">
-              <div className="feature-card-icon" aria-hidden="true">{t.icon}</div>
-              <h3 style={{ margin: "0 0 0.35rem", fontSize: "0.95rem" }}>{t.label}</h3>
-              <p style={{ fontSize: "0.82rem", margin: 0 }}>{t.desc}</p>
+              <div className="feature-card-icon" aria-hidden="true"
+                style={{ fontSize: "1.2rem", width: 44, height: 44 }}>
+                {t.icon}
+              </div>
+              <h3 style={{ margin: "0 0 0.25rem", fontSize: "0.95rem", color: "var(--color-text)" }}>
+                {t.label}
+              </h3>
+              <p style={{ fontSize: "0.82rem", margin: "0 0 0.5rem" }}>{t.desc}</p>
+              <p style={{ fontSize: "0.75rem", margin: 0, color: "var(--color-text-dim)" }}>{t.sub}</p>
             </li>
           ))}
         </ul>
       </section>
-
-      {/* CTA for logged-in users */}
-      {user && (
-        <section
-          aria-labelledby="actions-heading"
-          style={{ marginTop: "2rem" }}
-        >
-          <h2 id="actions-heading" style={{ marginTop: 0 }}>Primary Actions</h2>
-          <div className="page-grid page-grid-2" style={{ maxWidth: "720px" }}>
-            <Link
-              to="/solve"
-              className="feature-card"
-              style={{ textDecoration: "none", display: "block" }}
-              aria-describedby="solve-desc"
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem" }}>
-                <span className="feature-card-icon" style={{ margin: 0 }}>∑</span>
-                <span className="btn btn-sm" style={{ pointerEvents: "none", background: "var(--color-primary)", color: "var(--color-primary-text)", border: "none" }}>Press S</span>
-              </div>
-              <h3 style={{ margin: "0.5rem 0 0.25rem", color: "var(--color-text)" }}>Solve Math Expression</h3>
-              <p id="solve-desc" style={{ fontSize: "0.85rem", margin: 0 }}>
-                Type equations or use voice dictation to get step-by-step solutions.
-              </p>
-            </Link>
-            <Link
-              to="/practice"
-              className="feature-card"
-              style={{ textDecoration: "none", display: "block" }}
-              aria-describedby="practice-desc"
-            >
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "0.5rem" }}>
-                <span className="feature-card-icon" style={{ margin: 0 }}>📋</span>
-                <span className="btn btn-sm" style={{ pointerEvents: "none", background: "var(--color-info-bg)", color: "var(--color-info-text)", border: "1px solid var(--color-info)" }}>Press P</span>
-              </div>
-              <h3 style={{ margin: "0.5rem 0 0.25rem", color: "var(--color-text)" }}>Practice Assignments</h3>
-              <p id="practice-desc" style={{ fontSize: "0.85rem", margin: 0 }}>
-                Complete assigned math sets with automated answer checking.
-              </p>
-            </Link>
-          </div>
-        </section>
-      )}
     </div>
   );
 }

@@ -62,7 +62,7 @@ async function request(path, options = {}) {
   } catch {
     throw new ApiError(
       0,
-      "Could not reach the MathAble server. Please check your connection and try again.",
+      "Could not reach the MathAble server. Please check that the backend is running on http://localhost:8000 and try again.",
     );
   }
 

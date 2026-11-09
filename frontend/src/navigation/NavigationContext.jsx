@@ -50,6 +50,10 @@ export function NavigationProvider({ children }) {
     try {
       localStorage.setItem(STORAGE_KEY, mode);
     } catch { /* ignore */ }
+    // Stop any ongoing speech when switching to keyboard-only mode
+    if (mode === NAV_MODES.KEYBOARD && typeof window !== "undefined" && "speechSynthesis" in window) {
+      window.speechSynthesis.cancel();
+    }
   }, []);
 
   const dismissFirstRun = useCallback(() => {

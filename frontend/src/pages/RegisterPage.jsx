@@ -42,7 +42,7 @@ export default function RegisterPage() {
       announce(`Your ${role} account was created successfully. You are now logged in.`);
       navigate(role === "teacher" ? "/teacher" : "/");
     } catch (exc) {
-      const msg = exc.detail || "We could not create your account. Please try again.";
+      const msg = exc.detail || exc.message || "We could not create your account. Please check your details and try again.";
       setError(msg);
       announce(msg, true);
     } finally {
